@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Nithya Dharshini</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#0d0608;font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+.mag{max-width:680px;margin:0 auto;background:#fdf6f0;color:#1a0a0a;overflow:hidden}
+
+/* ===== PRELOADER ===== */
+.preloader{position:fixed;inset:0;background:#0d0608;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s ease, visibility .9s ease;overflow:hidden}
+.preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.pl-rings{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center}
+.pl-ring{position:absolute;border:1px solid rgba(192,56,74,.35);border-radius:50%;width:100%;height:100%;animation:plring 2.2s ease-out infinite}
+.pl-ring:nth-child(2){animation-delay:.7s}
+.pl-ring:nth-child(3){animation-delay:1.4s}
+@keyframes plring{0%{transform:scale(.3);opacity:0}20%{opacity:.8}100%{transform:scale(1.15);opacity:0}}
+.pl-heart{font-size:44px;color:#c0384a;animation:plbeat 1.15s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(192,56,74,.9));position:relative;z-index:2}
+@keyframes plbeat{0%,100%{transform:scale(1)}20%{transform:scale(1.18)}40%{transform:scale(.96)}60%{transform:scale(1.1)}80%{transform:scale(1)}}
+.pl-text{margin-top:26px;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(255,220,200,.8);font-size:15px;letter-spacing:3px;text-align:center}
+.pl-dots span{animation:pldot 1.4s infinite}
+.pl-dots span:nth-child(2){animation-delay:.2s}
+.pl-dots span:nth-child(3){animation-delay:.4s}
+@keyframes pldot{0%,100%{opacity:.15}50%{opacity:1}}
+.pl-bar{width:170px;height:2px;background:rgba(255,255,255,.1);margin-top:20px;overflow:hidden;border-radius:2px}
+.pl-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#c0384a,#ff8a9e);transition:width .25s ease;border-radius:2px}
+.pl-petal{position:absolute;color:rgba(192,56,74,.5);animation:plfloat linear infinite}
+@keyframes plfloat{0%{opacity:0;transform:translateY(20px) rotate(0)}20%{opacity:.8}100%{opacity:0;transform:translateY(-160px) rotate(220deg)}}
+
+/* ===== MUSIC TOGGLE ===== */
+.music-toggle{position:fixed;bottom:22px;right:22px;z-index:600;width:54px;height:54px;border-radius:50%;background:#c0384a;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 22px rgba(192,56,74,.55);border:1px solid rgba(255,255,255,.15);transition:transform .25s ease}
+.music-toggle:hover{transform:scale(1.08)}
+.music-toggle svg{width:20px;height:20px}
+.eq{display:flex;align-items:flex-end;gap:3px;height:16px}
+.eq span{display:block;width:3px;background:#fdf6f0;border-radius:2px;animation:eqbar .8s ease-in-out infinite;height:4px}
+.eq span:nth-child(1){animation-delay:0s}
+.eq span:nth-child(2){animation-delay:.15s}
+.eq span:nth-child(3){animation-delay:.3s}
+.music-toggle.paused .eq span{animation-play-state:paused;height:4px}
+@keyframes eqbar{0%,100%{height:4px}50%{height:16px}}
+.music-hint{position:fixed;bottom:30px;right:84px;z-index:600;background:rgba(13,6,8,.85);color:rgba(255,220,200,.9);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;padding:8px 14px;border-radius:20px;white-space:nowrap;opacity:0;transform:translateX(8px);transition:opacity .4s ease, transform .4s ease;pointer-events:none}
+.music-hint.show{opacity:1;transform:translateX(0)}
+
+.cover{position:relative;height:620px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:40px 40px 48px}
+.cover-bg{position:absolute;inset:0;width:100%;height:110%;object-fit:cover;object-position:center 18%;filter:brightness(.48) saturate(1.3);will-change:transform}
+.cover-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,6,8,.6) 0%,rgba(40,10,18,.3) 40%,rgba(13,6,8,.82) 100%)}
+.petals{position:absolute;inset:0;pointer-events:none;z-index:2}
+.petal{position:absolute;opacity:0;animation:pfall linear infinite}
+@keyframes pfall{0%{opacity:0;transform:translateY(-30px) rotate(0deg)}15%{opacity:.8}85%{opacity:.4}100%{opacity:0;transform:translateY(650px) rotate(900deg)}}
+.cover-header{position:relative;z-index:3;display:flex;justify-content:space-between}
+.mag-logo{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;letter-spacing:5px;color:rgba(255,220,200,.8);text-transform:uppercase}
+.issue-tag{font-size:9px;letter-spacing:2px;color:rgba(255,180,150,.5);text-transform:uppercase;text-align:right;line-height:1.7}
+.cover-center{position:relative;z-index:3;text-align:center}
+.eyebrow{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,200,180,.75);letter-spacing:4px;margin-bottom:10px}
+.cover-title{font-family:'Playfair Display',serif;font-size:88px;font-weight:700;font-style:italic;color:#fdf6f0;line-height:.85;letter-spacing:-4px;text-shadow:0 4px 40px rgba(192,56,74,.6)}
+.cover-title span{display:inline-block}
+.heart-main{font-size:64px;display:block;animation:hbeat 2.5s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(192,56,74,1));margin:8px 0}
+@keyframes hbeat{0%,100%{transform:scale(1)}20%{transform:scale(1.12)}40%{transform:scale(1)}60%{transform:scale(1.07)}80%{transform:scale(1)}}
+.cover-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:rgba(255,220,200,.92);letter-spacing:2px;margin-top:6px}
+.cover-bottom{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-end}
+.c-t{font-size:9px;letter-spacing:2px;color:rgba(255,200,170,.65);text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.c-t::before{content:'♥';color:#c0384a;font-size:7px}
+.c-date{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,200,180,.45);text-align:right;font-style:italic;line-height:1.6}
+
+.story-banner{background:#c0384a;padding:15px 40px;text-align:center;position:relative;overflow:hidden}
+.story-banner::before,.story-banner::after{content:'♥';position:absolute;font-size:80px;color:rgba(255,255,255,.06);top:-10px}
+.story-banner::before{left:10px}.story-banner::after{right:10px}
+.story-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(255,255,255,.93);position:relative;z-index:1}
+
+.sec{padding:48px 40px}
+.sec-label{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#c0384a;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:.5px;background:rgba(192,56,74,.25)}
+
+.opening{background:#fdf6f0;border-bottom:.5px solid rgba(192,56,74,.12)}
+.drop-cap{float:left;font-family:'Playfair Display',serif;font-size:80px;font-weight:700;line-height:.8;color:#c0384a;margin-right:8px;margin-top:6px;font-style:italic}
+.letter-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;line-height:1.8;color:#2d1015;font-style:italic}
+.letter-sig{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:#c0384a;margin-top:24px;text-align:right}
+
+.dark-sec{background:#100608;padding:48px 40px}
+.dark-sec .sec-label{color:rgba(255,180,150,.65)}
+.dark-sec .sec-label::after{background:rgba(255,180,150,.18)}
+.dark-hl{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#fdf6f0;margin-bottom:24px;line-height:1.25}
+
+.pf{position:relative;overflow:hidden;cursor:pointer;display:block;background:#1a0a0c}
+.pf img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 20%;transition:transform .6s ease;will-change:transform}
+.pf:hover img{transform:scale(1.05)}
+.pf-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(8,2,4,.92) 0%,rgba(8,2,4,.3) 60%,transparent 100%);padding:24px 14px 12px;font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,240,230,.95);letter-spacing:.5px}
+.pf-ov{position:absolute;inset:0;opacity:0;transition:opacity .35s;display:flex;align-items:center;justify-content:center}
+.pf:hover .pf-ov{opacity:1}
+.ov-h{font-size:40px;color:rgba(255,255,255,.85);animation:ovp .9s ease-in-out infinite}
+@keyframes ovp{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+
+.reasons-sec{background:#fff8f5}
+.rh{font-family:'Playfair Display',serif;font-size:34px;font-weight:400;font-style:italic;color:#1a0a0a;line-height:1.15;margin-bottom:28px}
+.rh em{color:#c0384a}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(192,56,74,.12);border:.5px solid rgba(192,56,74,.12)}
+.rc{background:#fdf6f0;padding:22px;position:relative;overflow:hidden;transition:background .3s, transform .3s}
+.rc:hover{background:#fff4ef;transform:translateY(-3px)}
+.rc::before{content:attr(data-n);position:absolute;top:8px;right:12px;font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:rgba(192,56,74,.07);line-height:1}
+.ri{font-size:22px;margin-bottom:10px;display:block}
+.rt{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:#c0384a;margin-bottom:7px}
+.rb{font-size:13px;font-weight:300;line-height:1.65;color:#4a2028}
+
+.pq-sec{background:#c0384a;padding:60px 48px;text-align:center;position:relative;overflow:hidden}
+.pq-ring{position:absolute;border-radius:50%;border:.5px solid rgba(255,255,255,.12);animation:ring 6s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.08);opacity:.15}}
+.pq-open{position:absolute;top:-5px;left:22px;font-size:110px;color:rgba(255,255,255,.06);font-family:Georgia,serif;line-height:1}
+.pq-txt{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;font-style:italic;color:#fff;line-height:1.45;position:relative;z-index:1;max-width:480px;margin:0 auto 20px}
+.pq-attr{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+.tl-wrap{position:relative;padding-left:28px}
+.tl-line{position:absolute;left:0;top:8px;bottom:8px;width:.5px;background:linear-gradient(to bottom,#c0384a,rgba(192,56,74,.08));transform:scaleY(0);transform-origin:top}
+.tl-item{position:relative;margin-bottom:28px;padding-bottom:28px;border-bottom:.5px solid rgba(255,200,180,.08)}
+.tl-item:last-child{border-bottom:none;margin-bottom:0}
+.tl-dot{position:absolute;left:-32px;top:5px;width:10px;height:10px;border-radius:50%;background:#c0384a;border:2px solid #100608;box-shadow:0 0 0 1.5px #c0384a;transform:scale(0)}
+.tl-date{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,180,150,.55);margin-bottom:7px}
+.tl-title{font-family:'Playfair Display',serif;font-size:19px;font-style:italic;color:#fdf6f0;margin-bottom:7px}
+.tl-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;line-height:1.75;color:rgba(253,246,240,.65);font-style:italic}
+
+.extra-sec{background:#fdf6f0;padding:48px 40px 12px}
+.extra-hl{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#1a0a0a;margin-bottom:24px;line-height:1.25}
+.extra-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:3px}
+
+.pr-sec{background:#fdf6f0}
+.pr-hl{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#1a0a0a;margin-bottom:28px}
+.pr-item{display:flex;gap:16px;margin-bottom:22px;padding-bottom:22px;border-bottom:.5px solid rgba(192,56,74,.1)}
+.pr-item:last-child{border-bottom:none;margin-bottom:0}
+.pr-n{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:rgba(192,56,74,.18);line-height:1;min-width:34px}
+.pr-tt{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:#c0384a;margin-bottom:5px}
+.pr-tx{font-size:13px;font-weight:300;color:#4a2028;line-height:1.65}
+
+.back{position:relative;overflow:hidden;padding:72px 40px;text-align:center;background:#0d0608}
+.back-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:brightness(.2) saturate(.9) blur(1px);transform:scale(1.04)}
+.back-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,6,8,.4),rgba(13,6,8,.92))}
+.back-inner{position:relative;z-index:2}
+.back-hearts{display:flex;justify-content:center;gap:10px;margin-bottom:28px}
+.bh{font-size:16px;color:#c0384a;animation:bp 2.1s ease-in-out infinite}
+.bh:nth-child(2){animation-delay:.2s}.bh:nth-child(3){animation-delay:.4s;font-size:26px}.bh:nth-child(4){animation-delay:.6s}.bh:nth-child(5){animation-delay:.8s}
+@keyframes bp{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.4);opacity:1}}
+.back-quote{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:rgba(253,246,240,.88);line-height:1.6;margin-bottom:8px;font-weight:300}
+.back-name{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#c0384a;margin:14px 0 6px}
+.back-ded{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,180,150,.35)}
+.sparkle{position:absolute;border-radius:50%;background:rgba(255,200,180,.6);animation:twink 3s ease-in-out infinite}
+@keyframes twink{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+
+/* ===== LITTLE THINGS (reuses .rg/.rc grid) ===== */
+.little-sec{background:#100608}
+.little-sec .sec-label{color:rgba(255,180,150,.65)}
+.little-sec .sec-label::after{background:rgba(255,180,150,.18)}
+.little-sec .rh{color:#fdf6f0}
+.little-sec .rh em{color:#ff8a9e}
+.little-sec .rg{background:rgba(255,180,150,.1);border-color:rgba(255,180,150,.1)}
+.little-sec .rc{background:#180a0c}
+.little-sec .rc:hover{background:#200d10}
+.little-sec .rt{color:#ff8a9e}
+.little-sec .rb{color:rgba(253,246,240,.62)}
+.little-sec .rc::before{color:rgba(255,180,150,.06)}
+
+/* ===== LOVE IN NUMBERS ===== */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:6px}
+.stat-item{text-align:center;padding:22px 8px;border:.5px solid rgba(255,180,150,.16);border-radius:4px;position:relative;overflow:hidden}
+.stat-num{font-family:'Playfair Display',serif;font-size:32px;font-style:italic;color:#ff8a9e;line-height:1;margin-bottom:8px}
+.stat-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,200,180,.55);line-height:1.5}
+
+/* ===== AMBIENT FLOATING HEARTS (reusable) ===== */
+.amb-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.amb-heart{position:absolute;opacity:0;animation:ambfloat linear infinite}
+@keyframes ambfloat{0%{opacity:0;transform:translateY(20px) scale(.7)}15%{opacity:.55}85%{opacity:.35}100%{opacity:0;transform:translateY(-220px) scale(1.1)}}
+
+/* ===== CLICK HEART BURST ===== */
+.click-heart{position:fixed;pointer-events:none;z-index:9998;font-size:20px;color:#c0384a;animation:clickheart 1s ease-out forwards;will-change:transform,opacity}
+@keyframes clickheart{0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0deg)}100%{opacity:0;transform:translate(var(--dx,0px),-90px) scale(1.3) rotate(var(--rot,20deg))}}
+
+/* ===== DOUBLE-TAP LIKE HEART (on photos) ===== */
+.pf{ }
+.dt-heart{position:absolute;top:50%;left:50%;font-size:64px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.4);transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;z-index:5;animation:dtpop .85s ease forwards}
+@keyframes dtpop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}25%{transform:translate(-50%,-50%) scale(1.15);opacity:1}45%{transform:translate(-50%,-50%) scale(.95);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px){
+  .cover{height:560px;padding:28px 24px 36px}
+  .cover-title{font-size:60px;letter-spacing:-2px}
+  .heart-main{font-size:48px;margin:4px 0}
+  .cover-name{font-size:18px}
+  .eyebrow{font-size:12px;letter-spacing:3px}
+  .c-t,.c-date{font-size:10px}
+
+  .story-banner{padding:13px 20px}
+  .story-text{font-size:13px}
+
+  .sec,.dark-sec{padding:36px 22px}
+  .extra-sec{padding:36px 22px 10px}
+  .sec-label{font-size:8px;letter-spacing:3px;margin-bottom:16px}
+
+  .drop-cap{font-size:56px;margin-top:4px}
+  .letter-text{font-size:16px;line-height:1.7}
+  .letter-sig{font-size:19px}
+
+  .dark-hl,.extra-hl,.pr-hl{font-size:22px}
+  .rh{font-size:26px;margin-bottom:20px}
+
+  /* image gallery: keep 2-col grid but shrink fixed heights so tall crops don't stretch too far on narrow phones */
+  .dark-sec > div[style*="grid-template-columns:1fr 1fr"]{gap:2px}
+  .pf[style*="height:390px"]{height:280px !important}
+  .pf[style*="height:193px"]{height:139px !important}
+  .pf[style*="height:295px"]{height:220px !important}
+  .pf[style*="height:200px"]{height:150px !important}
+  .pf-cap{font-size:11px;padding:18px 10px 10px}
+
+  .rg{grid-template-columns:1fr 1fr}
+  .rc{padding:16px}
+  .ri{font-size:19px;margin-bottom:7px}
+  .rt{font-size:14px}
+  .rb{font-size:12px;line-height:1.55}
+
+  .pq-sec{padding:44px 26px}
+  .pq-txt{font-size:20px}
+  .pq-open{font-size:80px;left:12px}
+
+  .tl-wrap{padding-left:22px}
+  .tl-dot{left:-26px}
+  .tl-title{font-size:17px}
+  .tl-text{font-size:14px}
+
+  .extra-grid{gap:2px}
+  .extra-grid .pf{height:110px !important}
+
+  .pr-item{gap:12px;margin-bottom:18px;padding-bottom:18px}
+  .pr-n{font-size:24px;min-width:28px}
+  .pr-tt{font-size:14px}
+  .pr-tx{font-size:12px}
+
+  .back{padding:56px 24px}
+  .back-quote{font-size:18px}
+  .back-name{font-size:22px}
+
+  .stat-num{font-size:24px}
+  .stat-label{font-size:8px}
+  .stat-item{padding:16px 4px}
+}
+
+@media (max-width: 380px){
+  .cover{height:520px}
+  .cover-title{font-size:48px}
+  .heart-main{font-size:40px}
+  .rg{grid-template-columns:1fr}
+  .extra-grid{grid-template-columns:1fr 1fr 1fr}
+  .extra-grid .pf{height:96px !important}
+  .pf[style*="height:390px"]{height:220px !important}
+  .pf[style*="height:193px"]{height:120px !important}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- ================= PRELOADER ================= -->
+<div class="preloader" id="preloader">
+  <div class="pl-petals" id="plPetals"></div>
+  <div class="pl-rings">
+    <div class="pl-ring"></div>
+    <div class="pl-ring"></div>
+    <div class="pl-ring"></div>
+    <span class="pl-heart">♥</span>
+  </div>
+  <div class="pl-text">Loading our love story<span class="pl-dots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="pl-bar"><div class="pl-bar-fill" id="plBar"></div></div>
+</div>
+
+<!-- ================= MUSIC TOGGLE ================= -->
+<audio id="bgm" src="assets/extracted_audio(1).mp3" loop preload="none"></audio>
+<div class="music-hint" id="musicHint">Play our song ♥</div>
+<div class="music-toggle paused" id="musicToggle" title="Play background music">
+  <div class="eq"><span></span><span></span><span></span></div>
+</div>
+
+<div class="mag">
+
+<div class="cover">
+  <img class="cover-bg" src="assets/img1.jpeg" alt="Nithya Dharshini">
+  <div class="cover-grad"></div>
+  <div class="petals" id="petals"></div>
+  <div class="cover-header">
+    <div class="mag-logo">For You · Always</div>
+  </div>
+  <div class="cover-center">
+    <div class="eyebrow">— a moment dedicated to —</div>
+    <h1 class="cover-title" id="coverTitle">Love</h1>
+    <span class="heart-main" id="coverHeart">♥</span>
+    <div class="cover-name" id="coverName">For Nithya Dharshini</div>
+  </div>
+  <div class="cover-bottom" id="coverBottom">
+    <div>
+      <div class="c-t">Reasons I love you</div>
+      <div class="c-t">Promises for forever</div>
+    </div>
+    <div class="c-date">Friends first<br>Lovers always</div>
+  </div>
+</div>
+
+<div class="story-banner">
+  <div class="story-text reveal-fade">✦ &nbsp;<strong>Aug 2023</strong> — started with friendship &nbsp;·&nbsp; <strong>Aug 2025</strong> — blossomed into love&nbsp; ✦</div>
+</div>
+
+<div class="dark-sec stats-sec" style="position:relative">
+  <div class="amb-hearts" id="ambStats"></div>
+  <div class="sec-label reveal-fade" style="position:relative;z-index:1">By the numbers</div>
+  <div class="dark-hl split-words" style="position:relative;z-index:1">Us, counted</div>
+  <div class="stat-grid" style="position:relative;z-index:1">
+    <div class="stat-item reveal-card"><div class="stat-num" id="statFriendDays" data-start="2023-08-01">0</div><div class="stat-label">Days of friendship</div></div>
+    <div class="stat-item reveal-card"><div class="stat-num" id="statLoveDays" data-start="2025-08-01">0</div><div class="stat-label">Days of love</div></div>
+    <div class="stat-item reveal-card"><div class="stat-num">∞</div><div class="stat-label">Reasons still uncounted</div></div>
+  </div>
+</div>
+
+<div class="sec opening">
+  <div class="sec-label reveal-fade">A letter from the heart</div>
+  <div class="letter-text reveal-fade">
+    <span class="drop-cap">N</span>
+    ithya Dharshini — what a beautiful thing it is, to have started as your friend. To have learned the shape of your laughter before I ever called it love. To have known your heart before I understood what it meant to my own.<br><br>
+    Two years of friendship quietly building into something neither of us could name — until August 2025, when we stopped pretending it was anything less than this.<br><br>
+    This magazine is every feeling I never quite had the words for. Every page, for you.
+  </div>
+  <div class="letter-sig reveal-fade">— Yours, always ♥</div>
+</div>
+
+<!-- GALLERY -->
+<div class="dark-sec">
+  <div class="sec-label reveal-fade">Our world</div>
+  <div class="dark-hl split-words">Moments worth<br>a thousand words</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:3px">
+    <div class="pf reveal-img" style="height:390px;grid-row:span 2">
+      <img src="assets/img 5.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+      <div class="pf-cap">She wore the sky like it was made for her</div>
+    </div>
+    <div class="pf reveal-img" style="height:193px">
+      <img src="assets/1745734335953.jpg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+      <div class="pf-cap">Stamped in my heart</div>
+    </div>
+    <div class="pf reveal-img" style="height:193px">
+      <img src="assets/img 6.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(100,180,255,.12)"><span class="ov-h">♥</span></div>
+      <div class="pf-cap">Lit up like you always are</div>
+    </div>
+  </div>
+
+  <div class="pf reveal-img" style="height:295px">
+    <img src="assets/Screenshot_2025-01-25-21-51-07-489_com.instagram.android-edit.jpg" alt="Nithya Dharshini" loading="lazy">
+    <div class="pf-ov" style="background:rgba(192,56,74,.12)"><span class="ov-h">♥</span></div>
+    <div class="pf-cap">Side by side — where I belong</div>
+  </div>
+</div>
+
+<div class="sec reasons-sec">
+  <div class="sec-label reveal-fade">Feature</div>
+  <div class="rh split-words">The many reasons<br>I love <em>Nithya</em></div>
+  <div class="rg">
+    <div class="rc reveal-card" data-n="01"><span class="ri">✨</span><div class="rt">Your smile</div><div class="rb">The one that sneaks up before you even realize it's happening. It's the most honest thing I've ever seen.</div></div>
+    <div class="rc reveal-card" data-n="02"><span class="ri">🌸</span><div class="rt">How you were my friend first</div><div class="rb">You knew me before love did. That makes what we have deeper than most people ever find.</div></div>
+    <div class="rc reveal-card" data-n="03"><span class="ri">☀️</span><div class="rt">Your quiet strength</div><div class="rb">You carry so much with grace. Watching you navigate life made me want to stand beside you always.</div></div>
+    <div class="rc reveal-card" data-n="04"><span class="ri">🌙</span><div class="rt">The way you see me</div><div class="rb">You saw me clearly — not a version you imagined — and chose to stay. That is everything.</div></div>
+    <div class="rc reveal-card" data-n="05"><span class="ri">💫</span><div class="rt">Two years of moments</div><div class="rb">Every conversation since Aug 2023 — I'd choose all of it again knowing exactly where it leads.</div></div>
+    <div class="rc reveal-card" data-n="06"><span class="ri">♥</span><div class="rt">Simply you</div><div class="rb">Nithya Dharshini. Before any reason, after every reason — just you. That is enough. That is everything.</div></div>
+  </div>
+</div>
+
+<div class="pq-sec">
+  <div class="amb-hearts" id="ambQuote"></div>
+  <div class="pq-ring" style="width:320px;height:320px;top:-90px;right:-90px"></div>
+  <div class="pq-ring" style="width:200px;height:200px;bottom:-50px;left:-50px;animation-delay:2.5s"></div>
+  <div class="pq-ring" style="width:140px;height:140px;top:35%;left:8%;animation-delay:4s"></div>
+  <div class="pq-open" id="pqOpen">❝</div>
+  <div class="pq-txt reveal-scale" id="pqTyped">"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</div>
+</div>
+
+<div class="sec little-sec">
+  <div class="sec-label reveal-fade">Small print</div>
+  <div class="rh split-words">Little things<br>I never told <em>you</em></div>
+  <div class="rg">
+    <div class="rc reveal-card" data-n="01"><span class="ri">☕</span><div class="rt">The way you laugh at your own jokes</div><div class="rb">Before anyone else does. It's my favorite kind of proof that you're happy.</div></div>
+    <div class="rc reveal-card" data-n="02"><span class="ri">📱</span><div class="rt">Your 2am voice notes</div><div class="rb">Half-asleep and rambling — I've replayed some of them more times than I'll admit.</div></div>
+    <div class="rc reveal-card" data-n="03"><span class="ri">🌧️</span><div class="rt">How you go quiet before a storm</div><div class="rb">I noticed. I always notice. And I'll always ask if you're okay.</div></div>
+    <div class="rc reveal-card" data-n="04"><span class="ri">🎧</span><div class="rt">That one song you replay</div><div class="rb">I still don't know all the words, but I know it means something, so it means something to me too.</div></div>
+    <div class="rc reveal-card" data-n="05"><span class="ri">🫶</span><div class="rt">You always ask if I've eaten</div><div class="rb">Before anything else. Every single time. Nobody has ever checked on me like that.</div></div>
+    <div class="rc reveal-card" data-n="06"><span class="ri">🌷</span><div class="rt">This page itself</div><div class="rb">Every line here took longer to write than it should've — because nothing felt like enough for you.</div></div>
+  </div>
+</div>
+
+<div class="dark-sec">
+  <div class="sec-label reveal-fade">Our story</div>
+  <div class="dark-hl split-words">From friendship<br>to forever</div>
+  <div class="tl-wrap" id="tlWrap">
+    <div class="tl-line" id="tlLine"></div>
+    <div class="tl-item reveal-tl"><div class="tl-dot"></div><div class="tl-date">August 2023</div><div class="tl-title">It started with friendship</div><div class="tl-text">We didn't know what we were building. We just knew we wanted to keep talking, keep showing up. That was enough — and it was everything.</div></div>
+    <div class="tl-item reveal-tl"><div class="tl-dot"></div><div class="tl-date">January 24, 2025</div><div class="tl-title">The day stamped in my heart</div><div class="tl-text">The light on your face. The way it felt completely right to just be next to you. That date lives in me now.</div></div>
+    <div class="tl-item reveal-tl"><div class="tl-dot"></div><div class="tl-date">The quiet days between</div><div class="tl-title">When nothing happened — and everything did</div><div class="tl-text">Ordinary afternoons, messages without reason. Friendship slowly becoming something we couldn't pretend wasn't love.</div></div>
+    <div class="tl-item reveal-tl"><div class="tl-dot"></div><div class="tl-date">August 2025</div><div class="tl-title">Friendship became love</div><div class="tl-text">Two years of knowing you — and finally we stopped calling it anything other than what it was. The most natural thing in the world.</div></div>
+    <div class="tl-item reveal-tl"><div class="tl-dot"></div><div class="tl-date">Right now</div><div class="tl-title">This moment</div><div class="tl-text">Still you. Still us. I am still choosing you — past every version of ourselves yet to come.</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:28px">
+    <div class="pf reveal-img" style="height:200px">
+      <img src="assets/1745734335953.jpg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+      <div class="pf-cap">Where we are now</div>
+    </div>
+    <div class="pf reveal-img" style="height:200px">
+      <img src="assets/Screenshot_2025-01-25-21-51-07-489_com.instagram.android-edit.jpg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+      <div class="pf-cap">Jan 24 — always</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXTRA MOMENTS GALLERY -->
+<div class="extra-sec">
+  <div class="sec-label reveal-fade">More moments</div>
+  <div class="extra-hl split-words">Every little memory,<br>kept safe here</div>
+  <div class="extra-grid">
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/WhatsApp Image 2026-05-11 at 4.54.22 PM.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/WhatsApp Image 2026-08-18 at 2.46.58 PM.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/WhatsApp Image 2026-08-18 at 2.29.52 PM.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+  </div>
+  <div class="extra-grid">
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/img 8.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/img1.jpeg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+    <div class="pf reveal-img" style="height:150px">
+      <img src="assets/Nithya.jpg" alt="Nithya Dharshini" loading="lazy">
+      <div class="pf-ov" style="background:rgba(192,56,74,.14)"><span class="ov-h">♥</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec pr-sec">
+  <div class="sec-label reveal-fade">Promises</div>
+  <div class="pr-hl split-words">What I promise you,<br><em style="color:#c0384a;font-family:'Playfair Display',serif">Nithya</em></div>
+  <div class="pr-item reveal-pr"><div class="pr-n">I</div><div><div class="pr-tt">To be your friend, always</div><div class="pr-tx">Before lover, before anything — I'll always be the person who knew you first and chose to stay.</div></div></div>
+  <div class="pr-item reveal-pr"><div class="pr-n">II</div><div><div class="pr-tt">To listen</div><div class="pr-tx">Not just to respond. To actually hear you — especially on the days the words don't come easily.</div></div></div>
+  <div class="pr-item reveal-pr"><div class="pr-n">III</div><div><div class="pr-tt">To choose you on hard days too</div><div class="pr-tx">Love is easy when everything is easy. I promise to stay soft with you when things are not.</div></div></div>
+  <div class="pr-item reveal-pr"><div class="pr-n">IV</div><div><div class="pr-tt">To never stop telling you</div><div class="pr-tx">On ordinary days, in tired moments, in a look across the room — you'll always know.</div></div></div>
+</div>
+
+<div class="back">
+  <img class="back-bg" src="assets/photo-april.jpg" alt="Nithya Dharshini">
+  <div class="back-grad"></div>
+  <div class="back-inner">
+    <div class="back-hearts"><span class="bh">♥</span><span class="bh">♥</span><span class="bh">♥</span><span class="bh">♥</span><span class="bh">♥</span></div>
+    <div class="back-quote reveal-fade">"You are my today<br>and all of my tomorrows."</div>
+    <div class="back-name reveal-fade">Nithya Dharshini ♥</div>
+    <div class="back-ded reveal-fade">Aug 2023 · Friends &nbsp;→&nbsp; Aug 2025 · Love &nbsp;→&nbsp; Forever</div>
+  </div>
+  <div class="sparkle" style="width:4px;height:4px;top:15%;left:10%;animation-delay:.3s"></div>
+  <div class="sparkle" style="width:3px;height:3px;top:30%;right:15%;animation-delay:1.1s"></div>
+  <div class="sparkle" style="width:5px;height:5px;bottom:25%;left:20%;animation-delay:1.8s"></div>
+  <div class="sparkle" style="width:3px;height:3px;bottom:40%;right:25%;animation-delay:2.4s"></div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ============ AMBIENT FLOATING HEARTS (reusable) ============ */
+function spawnAmbientHearts(containerId, count){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const glyphs = ['♥','♡','✦'];
+  for(let i=0;i<count;i++){
+    const h=document.createElement('div');h.className='amb-heart';
+    h.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    h.style.left = Math.random()*94+'%';
+    h.style.bottom = '-10px';
+    h.style.fontSize = (8+Math.random()*12)+'px';
+    h.style.color = `rgba(${255-Math.random()*20},${140+Math.random()*40},${150+Math.random()*40},.8)`;
+    h.style.animationDelay = (Math.random()*10)+'s';
+    h.style.animationDuration = (7+Math.random()*6)+'s';
+    el.appendChild(h);
+  }
+}
+spawnAmbientHearts('ambStats', 12);
+spawnAmbientHearts('ambQuote', 10);
+
+/* ============ FLOATING PETALS (cover) ============ */
+const pl = document.getElementById('petals');
+for(let i=0;i<26;i++){
+  const p=document.createElement('div');p.className='petal';
+  p.textContent=['♥','♡','❤','✦','·'][Math.floor(Math.random()*5)];
+  p.style.left=Math.random()*96+'%';
+  p.style.fontSize=(7+Math.random()*14)+'px';
+  p.style.color=`rgba(${192+Math.random()*40},${50+Math.random()*30},${70+Math.random()*20},.8)`;
+  p.style.animationDelay=Math.random()*12+'s';
+  p.style.animationDuration=(9+Math.random()*7)+'s';
+  pl.appendChild(p);
+}
+
+/* ============ PRELOADER PETALS ============ */
+const plPet = document.getElementById('plPetals');
+for(let i=0;i<14;i++){
+  const p=document.createElement('div');p.className='pl-petal';
+  p.textContent=['♥','♡','✦'][Math.floor(Math.random()*3)];
+  p.style.left=(10+Math.random()*80)+'%';
+  p.style.bottom='0';
+  p.style.fontSize=(8+Math.random()*10)+'px';
+  p.style.animationDelay=(Math.random()*2)+'s';
+  p.style.animationDuration=(2.4+Math.random()*1.6)+'s';
+  plPet.appendChild(p);
+}
+
+/* ============ PRELOADER PROGRESS + HIDE ============ */
+const preloader = document.getElementById('preloader');
+const bar = document.getElementById('plBar');
+let progress = 0;
+const progressTimer = setInterval(()=>{
+  progress += Math.random()*18;
+  if(progress>96) progress=96;
+  bar.style.width = progress+'%';
+},220);
+
+function finishLoading(){
+  clearInterval(progressTimer);
+  bar.style.width='100%';
+  setTimeout(()=>{
+    preloader.classList.add('hidden');
+    document.body.classList.remove('locked');
+    startEntrance();
+    tryMusicHint();
+  }, 380);
+}
+window.addEventListener('load', ()=> setTimeout(finishLoading, 1200));
+// safety fallback in case load event is delayed
+setTimeout(finishLoading, 4500);
+
+/* ============ WORD SPLIT HELPER (keeps <br> / <em>) ============ */
+function splitWords(el){
+  const nodes = Array.from(el.childNodes);
+  el.innerHTML='';
+  nodes.forEach(node=>{
+    if(node.nodeType===3){
+      node.textContent.split(' ').forEach(w=>{
+        if(w==='') return;
+        const span=document.createElement('span');
+        span.className='word';
+        span.style.display='inline-block';
+        span.textContent=w;
+        el.appendChild(span);
+        el.appendChild(document.createTextNode(' '));
+      });
+    } else {
+      el.appendChild(node.cloneNode(true));
+    }
+  });
+  return el.querySelectorAll('.word');
+}
+
+function splitChars(el){
+  const text = el.textContent;
+  el.textContent='';
+  const spans=[];
+  text.split('').forEach(ch=>{
+    const span=document.createElement('span');
+    span.textContent= ch===' ' ? '\u00A0' : ch;
+    span.style.display='inline-block';
+    el.appendChild(span);
+    spans.push(span);
+  });
+  return spans;
+}
+
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ ENTRANCE (cover) ============ */
+function startEntrance(){
+  if(reduced || typeof gsap==='undefined') return;
+  const titleChars = splitChars(document.getElementById('coverTitle'));
+  gsap.set(titleChars, {opacity:0, y:50, rotateX:40});
+  gsap.set(['#coverHeart','#coverName','.eyebrow','.cover-header','#coverBottom'], {opacity:0});
+
+  const tl = gsap.timeline({defaults:{ease:'power3.out'}});
+  tl.to('.eyebrow', {opacity:1, y:0, duration:.6}, .1)
+    .from('.eyebrow', {y:14, duration:.6}, '<')
+    .to(titleChars, {opacity:1, y:0, rotateX:0, duration:.9, stagger:.045}, .25)
+    .to('#coverHeart', {opacity:1, scale:1, duration:.6, ease:'back.out(2)'}, '-=.4')
+    .to('#coverName', {opacity:1, y:0, duration:.6}, '-=.3')
+    .from('#coverName', {y:16, duration:.6}, '<')
+    .to('.cover-header', {opacity:1, y:0, duration:.5}, .1)
+    .from('.cover-header', {y:-14, duration:.5}, '<')
+    .to('#coverBottom', {opacity:1, y:0, duration:.6}, '-=.2')
+    .from('#coverBottom', {y:20, duration:.6}, '<');
+}
+
+/* ============ SCROLL ANIMATIONS ============ */
+window.addEventListener('load', ()=>{
+  if(reduced || typeof gsap==='undefined' || typeof ScrollTrigger==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // parallax on cover image
+  gsap.to('.cover-bg', {
+    yPercent: 12, ease:'none',
+    scrollTrigger:{trigger:'.cover', start:'top top', end:'bottom top', scrub:true}
+  });
+
+  // parallax on back image
+  gsap.to('.back-bg', {
+    yPercent: 8, ease:'none',
+    scrollTrigger:{trigger:'.back', start:'top bottom', end:'bottom top', scrub:true}
+  });
+
+  // simple fade/slide reveals
+  gsap.utils.toArray('.reveal-fade').forEach(el=>{
+    gsap.from(el, {
+      opacity:0, y:28, duration:.9, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 88%'}
+    });
+  });
+
+  // word-split headline reveals
+  gsap.utils.toArray('.split-words').forEach(el=>{
+    const words = splitWords(el);
+    gsap.set(words, {opacity:0, y:26, rotateZ:2});
+    gsap.to(words, {
+      opacity:1, y:0, rotateZ:0, duration:.7, stagger:.04, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 85%'}
+    });
+  });
+
+  // image reveal (scale + clip)
+  gsap.utils.toArray('.reveal-img').forEach((el,i)=>{
+    gsap.fromTo(el, {clipPath:'inset(0 0 100% 0)'}, {
+      clipPath:'inset(0 0 0% 0)', duration:1, ease:'power3.inOut',
+      scrollTrigger:{trigger:el, start:'top 90%'}
+    });
+    gsap.fromTo(el.querySelector('img'), {scale:1.22}, {
+      scale:1, duration:1.3, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 90%'}
+    });
+  });
+
+  // reasons cards stagger
+  gsap.from('.reveal-card', {
+    opacity:0, y:34, scale:.94, duration:.7, stagger:.08, ease:'power2.out',
+    scrollTrigger:{trigger:'.rg', start:'top 85%'}
+  });
+
+  // timeline connecting line draws downward as you scroll through it
+  gsap.to('#tlLine', {
+    scaleY: 1, ease:'none',
+    scrollTrigger:{trigger:'.tl-wrap', start:'top 75%', end:'bottom 60%', scrub:true}
+  });
+
+  gsap.utils.toArray('.reveal-tl').forEach((item,i)=>{
+    const dot = item.querySelector('.tl-dot');
+    gsap.to(dot, {
+      scale:1, duration:.5, ease:'back.out(3)',
+      scrollTrigger:{trigger:item, start:'top 85%'}
+    });
+    gsap.from(item, {
+      opacity:0, x:-24, duration:.7, ease:'power2.out',
+      scrollTrigger:{trigger:item, start:'top 88%'}
+    });
+  });
+
+  // promises stagger, alternating slide
+  gsap.utils.toArray('.reveal-pr').forEach((item,i)=>{
+    gsap.from(item, {
+      opacity:0, x: i%2===0 ? -30 : 30, duration:.7, ease:'power2.out',
+      scrollTrigger:{trigger:item, start:'top 88%'}
+    });
+  });
+
+  // quote scale-in + mark rotate
+  gsap.from('.reveal-scale', {
+    opacity:0, scale:.85, duration:.9, ease:'back.out(1.6)',
+    scrollTrigger:{trigger:'.pq-sec', start:'top 75%'}
+  });
+  gsap.from('#pqOpen', {
+    opacity:0, rotate:-15, duration:.9, ease:'power2.out',
+    scrollTrigger:{trigger:'.pq-sec', start:'top 75%'}
+  });
+
+  // back hearts stagger pop already animates via CSS; add entrance
+  gsap.from('.back-hearts .bh', {
+    opacity:0, scale:0, duration:.5, stagger:.08, ease:'back.out(3)',
+    scrollTrigger:{trigger:'.back', start:'top 70%'}
+  });
+
+  ScrollTrigger.refresh();
+});
+
+/* ============ SUBTLE TILT ON PHOTO HOVER ============ */
+if(!reduced && window.matchMedia('(hover:hover)').matches){
+  document.querySelectorAll('.pf').forEach(pf=>{
+    const img = pf.querySelector('img');
+    if(!img) return;
+    pf.addEventListener('mousemove', e=>{
+      const r = pf.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - .5;
+      const py = (e.clientY - r.top)/r.height - .5;
+      img.style.transform = `scale(1.06) rotateX(${py*-6}deg) rotateY(${px*6}deg)`;
+    });
+    pf.addEventListener('mouseleave', ()=>{ img.style.transform=''; });
+  });
+}
+
+/* ============ BACKGROUND MUSIC TOGGLE ============ */
+const bgm = document.getElementById('bgm');
+const musicToggle = document.getElementById('musicToggle');
+const musicHint = document.getElementById('musicHint');
+
+function tryMusicHint(){
+  musicHint.classList.add('show');
+  setTimeout(()=> musicHint.classList.remove('show'), 3200);
+}
+
+musicToggle.addEventListener('click', ()=>{
+  if(bgm.paused){
+    bgm.play().then(()=>{
+      musicToggle.classList.remove('paused');
+      musicToggle.title='Pause music';
+    }).catch(()=>{ /* autoplay restrictions - user can tap again */ });
+  } else {
+    bgm.pause();
+    musicToggle.classList.add('paused');
+    musicToggle.title='Play background music';
+  }
+});
+
+/* ============ LOVE-IN-NUMBERS COUNT-UP ============ */
+function countUp(el, target, duration){
+  const startTime = performance.now();
+  function tick(now){
+    const p = Math.min(1, (now-startTime)/duration);
+    const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(eased*target).toLocaleString();
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function daysSince(dateStr){
+  const start = new Date(dateStr);
+  const now = new Date();
+  return Math.max(0, Math.floor((now-start)/86400000));
+}
+document.querySelectorAll('.stat-num[data-start]').forEach(el=>{
+  const target = daysSince(el.getAttribute('data-start'));
+  let done = false;
+  const trigger = ()=>{
+    if(done) return; done = true;
+    countUp(el, target, 1600);
+  };
+  if(!reduced && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) trigger(); });
+    }, {threshold:.4});
+    io.observe(el);
+  } else {
+    el.textContent = target.toLocaleString();
+  }
+});
+
+/* ============ CLICK-ANYWHERE HEART BURST ============ */
+if(!reduced){
+  document.addEventListener('click', (e)=>{
+    if(e.target.closest('.music-toggle') || e.target.closest('.pf')) return;
+    const glyphs = ['♥','♡','❤'];
+    const heart = document.createElement('div');
+    heart.className='click-heart';
+    heart.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    heart.style.left = e.clientX+'px';
+    heart.style.top = e.clientY+'px';
+    heart.style.setProperty('--dx', (Math.random()*60-30)+'px');
+    heart.style.setProperty('--rot', (Math.random()*40-20)+'deg');
+    document.body.appendChild(heart);
+    setTimeout(()=> heart.remove(), 1000);
+  });
+}
+
+/* ============ DOUBLE-TAP / DOUBLE-CLICK TO LOVE A PHOTO ============ */
+document.querySelectorAll('.pf').forEach(pf=>{
+  let lastTap = 0;
+  function popHeart(){
+    const h = document.createElement('div');
+    h.className='dt-heart';
+    h.textContent='♥';
+    pf.appendChild(h);
+    setTimeout(()=> h.remove(), 900);
+  }
+  pf.addEventListener('dblclick', popHeart);
+  pf.addEventListener('touchend', ()=>{
+    const now = Date.now();
+    if(now - lastTap < 300) popHeart();
+    lastTap = now;
+  });
+});
+</script>
+</body>
+</html>
